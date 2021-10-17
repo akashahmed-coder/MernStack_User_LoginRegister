@@ -13,7 +13,7 @@ router.get("/about" ,async(req,res)=>{
 
     try{
        console.log("middleware")
-       const token =  JSON.stringify(req.cookies.jwtoken)
+       const token =  req.cookies.jwtoken
       
        const verifyToken = jwt.verify(token,process.env.SECRET_KEY)
        
