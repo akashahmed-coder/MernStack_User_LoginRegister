@@ -9,7 +9,7 @@ const About = () => {
     const history = useHistory()
     
     const getAboutData = async function(){
-       console.log("hlw")
+       
         try{
            
             const res = await fetch('/about',{
@@ -21,10 +21,10 @@ const About = () => {
                 },
                 credentials:"include"
             })
-            console.log("by")
+            
             const data = await res.json()
             setUserData(data)
-            console.log(data)
+          
             if(!res.status === 200 || !data){
                
                 throw new Error(res.error)

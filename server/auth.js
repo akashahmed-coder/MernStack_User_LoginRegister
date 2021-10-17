@@ -14,16 +14,15 @@ router.get("/about" ,async(req,res)=>{
     try{
        console.log("middleware")
        const token =  JSON.stringify(req.cookies.jwtoken)
-
-      console.log(token)
+      
        const verifyToken = jwt.verify(token,process.env.SECRET_KEY)
-       console.log(verifyToken)
+       
        const rootUser = await User.findOne({_id:verifyToken._id, "tokens.token":token})
-       console.log(rootUser)
+      
       if(!rootUser){
          throw new Error("User not Found")
       }
-      console.log("hi i am home page")
+     
       res.send(rootUser)
       
     }catch(err){
