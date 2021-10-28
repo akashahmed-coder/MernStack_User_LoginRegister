@@ -9,8 +9,10 @@ const About = () => {
     const history = useHistory()
     
     const getAboutData = async function(){
-       
+      
+        
         try{
+            
            
             const res = await fetch('/about',{
                 method:"GET",
@@ -21,13 +23,13 @@ const About = () => {
                 },
                 credentials:"include"
             })
-            
             const data = await res.json()
+            console.log(data)
             setUserData(data)
           
-            if(!res.status === 200 || !data){
+            if(!data){
                
-                throw new Error(res.error)
+                throw new Error("cannot get data from server")
             }
 
             
@@ -40,7 +42,6 @@ const About = () => {
     }
 
     useEffect(() => {
-        console.log("hi")
         getAboutData();
     }, [])
 
@@ -56,7 +57,7 @@ const About = () => {
                     <div className="col-md-6">
                         <div className="profile-head pl-3">
                             <h5>{userData.name}</h5>
-                            <span>Web Devloper</span>
+                            <span>{userData.work}</span>
                                <p className="profile-rating mt-3 mb-3">
                                    Rankings : 1/10
                                </p>
@@ -108,7 +109,7 @@ const About = () => {
                                 <label htmlFor="">User Id</label>
                             </div>
                             <div className="col-md-6">
-                                <p>233223322332</p>
+                                <p>{userData._id}</p>
                             </div>
                         </div>
 
@@ -117,7 +118,7 @@ const About = () => {
                                 <label htmlFor="">Name</label>
                             </div>
                             <div className="col-md-6">
-                                <p>Akash Ahmed</p>
+                                <p>{userData.name}</p>
                             </div>
                         </div>
 
@@ -126,7 +127,7 @@ const About = () => {
                                 <label htmlFor="">Email</label>
                             </div>
                             <div className="col-md-6">
-                                <p>akash@gmail.com</p>
+                                <p>{userData.email}</p>
                             </div>
                         </div>
                         <div className="row">
@@ -134,7 +135,7 @@ const About = () => {
                                 <label htmlFor="">Phone</label>
                             </div>
                             <div className="col-md-6">
-                                <p>01233453</p>
+                                <p>{userData.phone}</p>
                             </div>
                         </div>
                         <div className="row">
@@ -142,7 +143,7 @@ const About = () => {
                                 <label htmlFor="">Profassion</label>
                             </div>
                             <div className="col-md-6">
-                                <p>web devloper</p>
+                                <p>{userData.work}</p>
                             </div>
                         </div>
                     </div>

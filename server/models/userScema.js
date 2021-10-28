@@ -44,6 +44,7 @@ userScema.methods.generateAuthToken = async function (){
     const token = jwt.sign({_id:this.id},process.env.SECRET_KEY)
     this.tokens = this.tokens.concat({token:token})
     this.save();
+    return token ;
     
 }
 const User = mongoose.model('USER',userScema)

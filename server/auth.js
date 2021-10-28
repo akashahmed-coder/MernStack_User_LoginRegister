@@ -3,6 +3,7 @@ const router = express.Router();
 require('./db/conn')
 const User = require("./models/userScema")
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 // const authentication = require("./middleWare/Authentication")
 router.get("/",(req,res)=>{
     res.send("hellow i am home page")
@@ -12,23 +13,35 @@ router.get("/about" ,async(req,res)=>{
     
 
     try{
-       console.log("middleware")
-       const token =  req.cookies.jwtoken
-      
-       const verifyToken = jwt.verify(token,process.env.SECRET_KEY)
        
+       const token =  req.cookies.jwtoken
+       const verifyToken = jwt.verify(token,process.env.SECRET_KEY) 
        const rootUser = await User.findOne({_id:verifyToken._id, "tokens.token":token})
-      
+    
       if(!rootUser){
          throw new Error("User not Found")
-      }
-     
-      res.send(rootUser)
-      
+      } 
+      res.send(rootUser)    
     }catch(err){
     res.status(404).send("unauthorized. token not found")
     }
- 
+})
+router.get("/contact" ,async(req,res)=>{
+    
+
+    try{
+       
+       const token =  req.cookies.jwtoken
+       const verifyToken = jwt.verify(token,process.env.SECRET_KEY) 
+       const rootUser = await User.findOne({_id:verifyToken._id, "tokens.token":token})
+    
+      if(!rootUser){
+         throw new Error("User not Found")
+      } 
+      res.send(rootUser)    
+    }catch(err){
+    res.status(404).send("unauthorized. token not found")
+    }
 })
 
 router.post("/register", async (req,res)=>{
@@ -73,11 +86,12 @@ router.post("/signin",async(req,res)=>{
     }
   
     const isVeryfied = await bcrypt.compare(password,UserEmail.password)
-    const token = UserEmail.generateAuthToken()
+    const token = await UserEmail.generateAuthToken()
+    // const token = jwt.sign({_id: User._id},process.env.SECRET_KEY)
     console.log(token)
     res.cookie("jwtoken",token,{
-        expires: new Date(Date.now() + 25892000000 ),
-        httpOnly:true
+        httpOnnly:true
+        
     })
     
     if(isVeryfied){

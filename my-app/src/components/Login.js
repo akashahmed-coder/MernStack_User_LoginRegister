@@ -28,7 +28,7 @@ const {email,password} = User
       })
      
     })
-    console.log("hi")
+    
 
     const data = await res.json();
     if( res.status === 422 ||   !data ){

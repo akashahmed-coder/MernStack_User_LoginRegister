@@ -1,8 +1,52 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
+import {useHistory} from 'react-router-dom'
+
 
 const Contact = () => {
+    const history  = useHistory()
+    const [userData,setUserData] = useState({})
+
+    const getAboutData = async function(){
+      
+        
+        try{
+            
+           
+            const res = await fetch('/about',{
+                method:"GET",
+                headers:{
+                    Accept:"application/json",
+                    "Content-Type":"application/json"
+
+                },
+                credentials:"include"
+            })
+            const data = await res.json()
+            console.log(data)
+            setUserData(data)
+          
+            if(!data){
+               
+                throw new Error("cannot get data from server")
+            }
+
+            
+
+        }catch(err){
+            console.log(err)
+            history.push("/login")
+        }
+
+    }
+
+    useEffect(() => {
+        getAboutData();
+    }, [])
+
     return (
+        
         <div className="container contact-form">
+            <form method="GET">
             <div className="contact-image">
                 <img src="https://image.ibb.co/kUagtU/rocket_contact.png" alt="rocket_contact"/>
             </div>
@@ -39,7 +83,7 @@ const Contact = () => {
                         </div>
                     </div>
                 </div>
-            <form method="post">
+            
                 <h3>Drop Us a Message</h3>
 
 
@@ -63,7 +107,7 @@ const Contact = () => {
                     </div>
                     <div className="col-md-6">
                         <div className="form-group">
-                            <textarea name="txtMsg" className="form-control" placeholder="Your Message *"  >adfaf</textarea>
+                            <textarea name="txtMsg" className="form-control" placeholder="Your Message *"  ></textarea>
                         </div>
                     </div>
                 </div>
